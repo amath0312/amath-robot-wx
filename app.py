@@ -3,15 +3,16 @@
 
 from movie.spider import Spider as Movie
 from wxpy import *
-if __name__ == '__main__':
-    masters=['8281467162@chatroom']
+
+def start_robot():
     bot = Bot()
 
-    group = bot.groups().search('家属深圳三缺一')[0]
-    print(group)
+    master = bot.friends().search('槑')[0]
+    # group = bot.groups().search('程序员及家属')[0]
+
     @bot.register()
     def reply_my_friend(msg):
-        if msg.sender.wxid in masters and msg.text == ':movie':
+        if msg.member == master and msg.text == ':movie':
             message_text = ''
             movies = Movie().news()
             for m in movies:
@@ -19,7 +20,13 @@ if __name__ == '__main__':
                 message_text += '\r\n'*2
             return message_text
     bot.start()
-    # movies = Movie().news()
-    # for m in movies:
-    #     print(m)
-    #     print('='*20)
+
+def test_spider():
+    movies = Movie().news()
+    for m in movies:
+        print(m)
+        print('='*20)
+    
+if __name__ == '__main__':
+    # test_spider()
+    start_robot()
